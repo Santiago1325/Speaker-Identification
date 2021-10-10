@@ -6,6 +6,7 @@ function beta_coeffs = fit_logistic_regression()
     Y = []; 
     for i = 19:28
         [x, Fs] = audioread(strcat('Audios\',files(i).name));
+        x = x./max(x);
         coeffs = mfcc(x, Fs, "LogEnergy", "Ignore", "WindowLength", Fs*0.04, 'NumCoeffs', 35);
         X = [X ; coeffs];
         Y = [Y ; ones(size(coeffs, 1),1)];
@@ -13,18 +14,20 @@ function beta_coeffs = fit_logistic_regression()
     
     for i = 9:18
         [x, Fs] = audioread(strcat('Audios\',files(i).name));
+        x = x./max(x);
         coeffs = mfcc(x, Fs, "LogEnergy", "Ignore", "WindowLength", Fs*0.04, 'NumCoeffs', 35);
         X = [X ; coeffs];
-        Y = [Y ; ones(size(coeffs, 1),1) .* 2]
+        Y = [Y ; ones(size(coeffs, 1),1) .* 2];
     end
     
     for i = 1:8
         [x, Fs] = audioread(strcat('Audios\',files(i).name));
+        x = x./max(x);
         coeffs = mfcc(x, Fs, "LogEnergy", "Ignore", "WindowLength", Fs*0.04, 'NumCoeffs', 35);
         X = [X ; coeffs];
         Y = [Y ; ones(size(coeffs, 1),1) .* 3];
     end    
-    beta_coeffs = mnrfit(X,Y)
+    beta_coeffs = mnrfit(X,Y);
      
 
 end
